@@ -13,14 +13,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class ReciveController {
     public static final int PORT = 12345;
-    private Thread server;
+    private Server server;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -35,6 +33,7 @@ public class ReciveController {
 
     @FXML
     public void initialize() throws UnknownHostException{
+        server = new Server();
         dataLabel.setText("SERVER\n"+ InetAddress.getLocalHost().getHostName() + ":" +PORT + "\nor\n" + InetAddress.getLocalHost().getHostAddress()+ ":" +PORT);
     }
 
@@ -49,13 +48,12 @@ public class ReciveController {
     @FXML
     void onStartButtonClick(ActionEvent event) throws IOException {
         box.setStyle("-fx-background-color: #c4b858");
-        server = new Thread(new Server());
         server.start();
     }
 
     @FXML
     void onStopButtonClick(ActionEvent event) throws IOException {
         box.setStyle("-fx-background-color: #d44b42");
-        server.interrupt();
+        server.stop();
     }
 }

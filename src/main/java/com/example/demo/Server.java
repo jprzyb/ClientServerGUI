@@ -3,12 +3,14 @@ package com.example.demo;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server implements Runnable{
+public class Server{
     public static final int PORT = 12345;
     private static boolean isRunning;
+    Thread thread;
     List<Thread> clientsList;
 
     public Server(){
@@ -16,30 +18,36 @@ public class Server implements Runnable{
         isRunning = false;
     }
 
-
-    @Override
-    public void run() {
+    public void start(){
         isRunning = true;
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Serwer jest uruchomiony i nasłuchuje na porcie " + PORT);
+        thread = new Thread(()->{
+            try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+                serverSocket.setSoTimeout(100);
+                while (true) {
+                    System.out.println("listening " + thread.isAlive());
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Połączono z klientem: " + clientSocket);
 
-            while (isRunning) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Połączono z klientem: " + clientSocket);
-
-                Thread clientHandler = new Thread(new ClientHandler(clientSocket));
-                clientsList.add(clientHandler);
-                clientHandler.start();
+                    Thread clientHandler = new Thread(new ClientHandler(clientSocket));
+                    clientsList.add(clientHandler);
+                    clientHandler.start();
+                }
+            } catch (IOException e) {
+                e.getMessage();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
+        thread.start();
     }
 
     public void stop(){
+        System.out.println("stopping1");
         isRunning = false;
         for(Thread a : clientsList){
+            System.out.println("stopping2 "+a);
             a.interrupt();
         }
+        thread.interrupt();
+        System.out.println("stopping3");
+        System.out.println(thread.isAlive());
     }
 }
