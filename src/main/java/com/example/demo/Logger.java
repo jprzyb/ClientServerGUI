@@ -16,7 +16,7 @@ public class Logger {
             printWriter.println(LocalDateTime.now()  + " | " + msg);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            addLog("Cannot write log: " + e);
         }
     }
 
@@ -25,9 +25,9 @@ public class Logger {
         if (!file.exists()) {
             String directoryPath = file.getParent();
             File directory = new File(directoryPath);
-            if (!directory.exists()) directory.mkdirs();
+            if (!directory.exists()) addLog("Directory added (" + directory.mkdirs() + ").");
             try {
-                file.createNewFile();
+                addLog("File added ("+file.createNewFile()+").");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

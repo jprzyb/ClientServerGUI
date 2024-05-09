@@ -19,20 +19,19 @@ public class StartController {
     @FXML
     VBox box;
     @FXML
-    public void initialize(){
-        box.setStyle("-fx-background-color: #70b2db");
-    }
+    public void initialize(){}
     @FXML
     protected void onClientButtonClick(ActionEvent event) throws IOException {
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("send-view.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+
         stage.show();
     }
     @FXML
     protected void onServerButtonClick(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("recive-view.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("receive-view.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

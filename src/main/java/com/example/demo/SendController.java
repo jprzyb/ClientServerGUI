@@ -22,9 +22,7 @@ import java.util.Objects;
 
 public class SendController {
     public static final int PORT = 12345;
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+
     @FXML
     ListView fileList;
     @FXML
@@ -116,6 +114,9 @@ public class SendController {
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException{
+        Stage stage;
+        Scene scene;
+        Parent root;
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

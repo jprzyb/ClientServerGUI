@@ -1,8 +1,6 @@
 package com.example.demo;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,12 +21,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-public class ReciveController {
+public class ReceiveController {
     public static final int PORT = 12345;
     private Server server;
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+
     @FXML
     Label dataLabel;
     @FXML
@@ -66,7 +62,7 @@ public class ReciveController {
                     destinationlabel.setText(dir);
                 }
             } else if (t1.equals("This program files")) {
-                String dir = "recived_files/";
+                String dir = "received_files/";
                 server.setDestination(dir);
                 destinationlabel.setText(dir);
             } else {
@@ -79,6 +75,9 @@ public class ReciveController {
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root;
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -89,21 +88,20 @@ public class ReciveController {
     void onStartButtonClick() {
         startButton.setDisable(true);
         stopButton.setDisable(false);
-//        box.setStyle("-fx-background-color: #c4b858");
+        destinationPicker.setDisable(true);
         server.start();
-        Logger.addLog("Serwer started.");
+        Logger.addLog("Server started.");
     }
 
     @FXML
     void onStopButtonClick() {
         startButton.setDisable(false);
         stopButton.setDisable(true);
+        destinationPicker.setDisable(false);
         server.stop();
-        Logger.addLog("Serwer stopped.");
+        Logger.addLog("Server stopped.");
     }
     void addElementToGuiLogs(String msg){
-        Platform.runLater(() -> {
-            guiLogs.getItems().addAll(msg);
-        });
+        Platform.runLater(() -> guiLogs.getItems().addAll(msg));
     }
 }
