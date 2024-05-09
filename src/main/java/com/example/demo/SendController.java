@@ -12,10 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -45,31 +42,45 @@ public class SendController {
         FileChooser fileChooser = new FileChooser();
         files = fileChooser.showOpenMultipleDialog(null);
         fileList.getItems().setAll(files);
+        Logger.addLog("Added files: " + files);
     }
 
     @FXML
     void sendFiles(){
         if(!validateProperties()) return;
         infoLabel.setText("Sending!");
-        try(Socket socket = new Socket(InetAddress.getByName(hostName.getText()),PORT)){
+        Logger.addLog("Sending files.");
+
+        try {
+            Socket socket = new Socket(hostName.getText(), PORT);
+            Logger.addLog("Connected to server ("+socket+").");
+
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
             for(File f : files){
-                FileInputStream fileInputStream = new FileInputStream(f.getAbsolutePath());
-                OutputStream outputStream = socket.getOutputStream();
-                byte[] buffer = new byte[1024];
+                // Wysyłanie nazwy pliku
+                String[] fileName = f.getAbsolutePath().split("/");
+                String fileName2 = "recived_files/" + fileName[fileName.length-1];
+                dataOutputStream.writeUTF(fileName2);
+                Logger.addLog("File name send: " + fileName2);
+
+                // Wysyłanie pliku
+                FileInputStream fileInputStream = new FileInputStream(fileName[fileName.length-1]);
+                byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
+                    dataOutputStream.write(buffer, 0, bytesRead);
                 }
-                outputStream.close();
-                String[] x = f.getAbsolutePath().split("/");
-                infoLabel.setText(x[x.length-1] + " successfully send!");
-
+                fileInputStream.close();
+                Logger.addLog("File send: " + fileName2);
             }
+
+            socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
-            infoLabel.setText("Something went wrong!");
+            Logger.addLog("Something went wrong while sending!\n" + e.getMessage());
         }
+
+
     }
 
     private boolean validateProperties() {
@@ -90,6 +101,7 @@ public class SendController {
             if (host.getHostAddress().isEmpty()) return false;
         } catch (UnknownHostException e) {
             infoLabel.setText("Unknown host or server is off!");
+            Logger.addLog("Validation: Unknown host or server is off!");
             return false;
         }
 
@@ -98,6 +110,7 @@ public class SendController {
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException{
+
         root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

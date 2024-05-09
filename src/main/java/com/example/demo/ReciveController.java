@@ -46,14 +46,16 @@ public class ReciveController {
         stage.show();
     }
     @FXML
-    void onStartButtonClick(ActionEvent event) throws IOException {
+    void onStartButtonClick() {
         box.setStyle("-fx-background-color: #c4b858");
         server.start();
+        Logger.addLog("Serwer started.");
     }
 
     @FXML
-    void onStopButtonClick(ActionEvent event) throws IOException {
+    void onStopButtonClick() {
         box.setStyle("-fx-background-color: #d44b42");
         server.stop();
+        Logger.addLog("Serwer stopped.");
     }
 }

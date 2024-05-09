@@ -1,53 +1,68 @@
 package com.example.demo;
 
+import java.io.DataInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Server{
     public static final int PORT = 12345;
-    private static boolean isRunning;
     Thread thread;
-    List<Thread> clientsList;
+    List<Thread> clientsThreads;
+    ServerSocket serverSocket;
 
     public Server(){
-        clientsList = new ArrayList<>();
-        isRunning = false;
+        clientsThreads = new ArrayList<>();
     }
 
     public void start(){
-        isRunning = true;
         thread = new Thread(()->{
-            try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-//                serverSocket.setSoTimeout(100);
-                while (true) {
-                    System.out.println("listening " + thread.isAlive());
-                    Socket clientSocket = serverSocket.accept();
-                    System.out.println("Połączono z klientem: " + clientSocket);
+            try {
+                serverSocket = new ServerSocket(PORT);
+                System.out.println("Serwer uruchomiony, oczekiwanie na klienta...");
+                Logger.addLog("Server started, waiting for client...");
 
-                    Thread clientHandler = new Thread(new ClientHandler(clientSocket));
-                    clientsList.add(clientHandler);
-                    clientHandler.start();
-                }
+                Socket socket = serverSocket.accept();
+                Logger.addLog("Client connected: " + socket);
+                clientsThreads.add(new Thread(()->{
+                    try{
+                        Logger.addLog("Client started: " + socket);
+                        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                        String fileName = dataInputStream.readUTF();
+                        Logger.addLog("Recieved file name: " + fileName);
+                        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = dataInputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, bytesRead);
+                        }
+                        fileOutputStream.close();
+                        Logger.addLog("File recived: " + fileName);
+                    }catch (Exception e){
+                        Logger.addLog("Something went wrong while recieving data!\n" + e.getMessage());
+                    }
+                }));
+                clientsThreads.get(clientsThreads.size()-1).start();
             } catch (IOException e) {
-                e.getMessage();
+                Logger.addLog("Something went wrong while handling client!\n" + e.getMessage());
             }
         });
         thread.start();
     }
 
     public void stop(){
-        System.out.println("stopping1");
-        isRunning = false;
-        for(Thread a : clientsList){
-            System.out.println("stopping2 "+a);
+        try {
+            serverSocket.close();
+            Logger.addLog("Stopping server!");
+        } catch (IOException e) {
+            Logger.addLog("Something went wrong while stopping the server!" + e.getMessage());
+        }
+        for(Thread a : clientsThreads){
             a.interrupt();
         }
         thread.interrupt();
-        System.out.println("stopping3");
-        System.out.println(thread.isAlive());
     }
 }
