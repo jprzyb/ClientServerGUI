@@ -45,7 +45,6 @@ public class SendController {
         FileChooser fileChooser = new FileChooser();
         files = fileChooser.showOpenMultipleDialog(null);
         fileList.getItems().setAll(files);
-
     }
 
     @FXML
@@ -53,6 +52,7 @@ public class SendController {
         if(!validateProperties()) return;
         infoLabel.setText("Sending!");
         try(Socket socket = new Socket(InetAddress.getByName(hostName.getText()),PORT)){
+
             for(File f : files){
                 FileInputStream fileInputStream = new FileInputStream(f.getAbsolutePath());
                 OutputStream outputStream = socket.getOutputStream();
@@ -64,8 +64,10 @@ public class SendController {
                 outputStream.close();
                 String[] x = f.getAbsolutePath().split("/");
                 infoLabel.setText(x[x.length-1] + " successfully send!");
+
             }
         } catch (IOException e) {
+            e.printStackTrace();
             infoLabel.setText("Something went wrong!");
         }
     }
