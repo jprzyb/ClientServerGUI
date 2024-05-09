@@ -61,8 +61,9 @@ public class ReciveController {
                 directoryChooser.setTitle("Pick directory");
                 File f = directoryChooser.showDialog(null);
                 if(f != null){
-                    server.setDestination(f.getAbsolutePath());
-                    destinationlabel.setText(f.getAbsolutePath());
+                    String dir = f.getAbsolutePath() + "\\";
+                    server.setDestination(dir);
+                    destinationlabel.setText(dir);
                 }
             } else if (t1.equals("This program files")) {
                 String dir = "recived_files/";
