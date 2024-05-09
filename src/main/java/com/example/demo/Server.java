@@ -22,7 +22,6 @@ public class Server{
         thread = new Thread(()->{
             try {
                 serverSocket = new ServerSocket(PORT);
-                System.out.println("Serwer uruchomiony, oczekiwanie na klienta...");
                 Logger.addLog("Server started, waiting for client...");
 
                 Socket socket = serverSocket.accept();
@@ -33,6 +32,8 @@ public class Server{
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                         String fileName = dataInputStream.readUTF();
                         Logger.addLog("Recieved file name: " + fileName);
+                        fileName = "recived_files/" +fileName;
+                        Logger.addLog("File directory mapped: " + fileName);
                         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
                         byte[] buffer = new byte[4096];
                         int bytesRead;

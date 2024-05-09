@@ -58,14 +58,16 @@ public class SendController {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
             for(File f : files){
-                // Wysyłanie nazwy pliku
+                // file name sending
+                dataOutputStream.flush();
                 String[] fileName = f.getAbsolutePath().split("\\\\");
-                String fileName2 = "recived_files/" + fileName[fileName.length-1];
+                String fileName2 = fileName[fileName.length-1];
                 dataOutputStream.writeUTF(fileName2);
                 Logger.addLog("File name send: " + fileName2);
 
-                // Wysyłanie pliku
-                FileInputStream fileInputStream = new FileInputStream(fileName[fileName.length-1]);
+                // file sending
+                dataOutputStream.flush();
+                FileInputStream fileInputStream = new FileInputStream(f.getAbsolutePath());
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {

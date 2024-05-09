@@ -1,0 +1,23 @@
+2024-05-09T13:31:00.429027800 | Added files: [E:\PJATK\sad\sad_s24512_praca3.xlsx]
+2024-05-09T13:31:04.882069600 | Sending files.
+2024-05-09T13:31:04.884160 | Connected to server (Socket[addr=SCLAP45/192.168.100.77,port=12345,localport=54762]).
+2024-05-09T13:31:04.885161200 | File name send: recived_files/sad_s24512_praca3.xlsx
+2024-05-09T13:31:04.886156600 | Something went wrong while sending!
+sad_s24512_praca3.xlsx (Nie można odnaleźć określonego pliku)
+2024-05-09T13:35:08.076500500 | Added files: [C:\Users\ASRock\OneDrive\Dokumenty\sample.txt, C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia.txt, C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia (2).txt, C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia (3).txt]
+2024-05-09T13:35:27.195389500 | Sending files.
+2024-05-09T13:35:27.247666 | Connected to server (Socket[addr=SCLAP45/192.168.100.77,port=12345,localport=50008]).
+2024-05-09T13:35:27.251654600 | File name send: sample.txt
+2024-05-09T13:35:27.257673700 | Something went wrong while sending!
+sample.txt (Nie można odnaleźć określonego pliku)
+2024-05-09T13:40:20.990674800 | Added files: [C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia (2).txt, C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia (3).txt, C:\Users\ASRock\OneDrive\Dokumenty\sample — kopia.txt, C:\Users\ASRock\OneDrive\Dokumenty\sample.txt]
+2024-05-09T13:40:26.711956900 | Sending files.
+2024-05-09T13:40:26.752425400 | Connected to server (Socket[addr=SCLAP45/192.168.100.77,port=12345,localport=50055]).
+2024-05-09T13:40:26.756414600 | File name send: sample — kopia (2).txt
+2024-05-09T13:40:26.758410 | File send: sample — kopia (2).txt
+2024-05-09T13:40:26.760370 | File name send: sample — kopia (3).txt
+2024-05-09T13:40:26.762398400 | File send: sample — kopia (3).txt
+2024-05-09T13:40:26.764392900 | File name send: sample — kopia.txt
+2024-05-09T13:40:26.766354400 | File send: sample — kopia.txt
+2024-05-09T13:40:26.768349 | File name send: sample.txt
+2024-05-09T13:40:26.770376500 | File send: sample.txt
