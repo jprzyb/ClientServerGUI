@@ -53,22 +53,24 @@ public class ReciveController {
         stopButton.setDisable(true);
         destinationPicker.getItems().addAll("Downloads", "Documents","This program files", "Other");
         destinationlabel.setText(server.destination);
-        destinationPicker.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+        destinationPicker.valueProperty().addListener((observableValue, s, t1) -> {
 //
-                if(t1.equals("Other")){
-                    DirectoryChooser directoryChooser = new DirectoryChooser();
-                    directoryChooser.setTitle("Pick directory");
-                    File f = directoryChooser.showDialog(null);
-                    if(f != null){
-                        server.setDestination(f.getAbsolutePath());
-                        destinationlabel.setText(f.getAbsolutePath());
-                    }
-                }else {
-                    server.setDestination(t1);
-                    destinationlabel.setText(t1+"/");
+            if(t1.equals("Other")){
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Pick directory");
+                File f = directoryChooser.showDialog(null);
+                if(f != null){
+                    server.setDestination(f.getAbsolutePath());
+                    destinationlabel.setText(f.getAbsolutePath());
                 }
+            } else if (t1.equals("This program files")) {
+                String dir = "recived_files/";
+                server.setDestination(dir);
+                destinationlabel.setText(dir);
+            } else {
+                String dir = System.getProperty("user.home") + "\\" + t1;
+                server.setDestination(dir);
+                destinationlabel.setText(dir);
             }
         });
     }
