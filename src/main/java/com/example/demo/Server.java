@@ -17,11 +17,14 @@ public class Server{
     public Server(){
         clientsThreads = new ArrayList<>();
         thread = new Thread(()->{
+            try {
+                serverSocket = new ServerSocket(PORT);
+            } catch (IOException e) {
+                Logger.addLog("Unable to start a serwer: " + e.getMessage());
+            }
+            Logger.addLog("Server started, waiting for client...");
             while(!thread.isInterrupted()){
                 try {
-                    serverSocket = new ServerSocket(PORT);
-                    Logger.addLog("Server started, waiting for client...");
-
                     Socket socket = serverSocket.accept();
                     Logger.addLog("Client connected: " + socket);
                     Thread clientThread = new Thread(()->{
@@ -42,6 +45,11 @@ public class Server{
                             Logger.addLog("File recived: " + fileName);
                         }catch (Exception e){
                             Logger.addLog("Something went wrong while recieving data!\n" + e.getMessage());
+                        }
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            Logger.addLog("Unable to close client connection!");
                         }
                     });
                     clientThread.start();
