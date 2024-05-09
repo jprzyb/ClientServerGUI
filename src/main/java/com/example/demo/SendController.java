@@ -59,7 +59,7 @@ public class SendController {
 
             for(File f : files){
                 // Wysyłanie nazwy pliku
-                String[] fileName = f.getAbsolutePath().split("/");
+                String[] fileName = f.getAbsolutePath().split("\\\\");
                 String fileName2 = "recived_files/" + fileName[fileName.length-1];
                 dataOutputStream.writeUTF(fileName2);
                 Logger.addLog("File name send: " + fileName2);
