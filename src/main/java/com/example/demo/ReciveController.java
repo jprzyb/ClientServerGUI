@@ -69,7 +69,7 @@ public class ReciveController {
                 server.setDestination(dir);
                 destinationlabel.setText(dir);
             } else {
-                String dir = System.getProperty("user.home") + "\\" + t1;
+                String dir = System.getProperty("user.home") + "\\" + t1+ "\\";
                 server.setDestination(dir);
                 destinationlabel.setText(dir);
             }
