@@ -52,12 +52,11 @@ public class SendController {
         Logger.addLog("Sending files.");
 
         try {
-            Socket socket = new Socket(hostName.getText(), PORT);
-            Logger.addLog("Connected to server ("+socket+").");
-
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
             for(File f : files){
+                Socket socket = new Socket(hostName.getText(), PORT);
+                Logger.addLog("Connected to server ("+socket+").");
+
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 // file name sending
                 dataOutputStream.flush();
                 String[] fileName = f.getAbsolutePath().split("\\\\");
@@ -74,10 +73,11 @@ public class SendController {
                     dataOutputStream.write(buffer, 0, bytesRead);
                 }
                 fileInputStream.close();
+                socket.close();
                 Logger.addLog("File send: " + fileName2);
             }
-
-            socket.close();
+            infoLabel.setText("Sent!");
+            Logger.addLog("Files send!.");
         } catch (IOException e) {
             Logger.addLog("Something went wrong while sending!\n" + e.getMessage());
         }

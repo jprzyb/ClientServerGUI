@@ -26,7 +26,7 @@ public class Server{
 
                 Socket socket = serverSocket.accept();
                 Logger.addLog("Client connected: " + socket);
-                clientsThreads.add(new Thread(()->{
+                Thread clientThread = new Thread(()->{
                     try{
                         Logger.addLog("Client started: " + socket);
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
@@ -45,8 +45,11 @@ public class Server{
                     }catch (Exception e){
                         Logger.addLog("Something went wrong while recieving data!\n" + e.getMessage());
                     }
-                }));
-                clientsThreads.get(clientsThreads.size()-1).start();
+                });
+                clientThread.start();
+                clientsThreads.add(clientThread);
+                clientsThreads.removeIf(t -> !t.isAlive());
+
             } catch (IOException e) {
                 Logger.addLog("Something went wrong while handling client!\n" + e.getMessage());
             }
