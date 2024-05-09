@@ -22,7 +22,7 @@ public class Server{
         isRunning = true;
         thread = new Thread(()->{
             try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-                serverSocket.setSoTimeout(100);
+//                serverSocket.setSoTimeout(100);
                 while (true) {
                     System.out.println("listening " + thread.isAlive());
                     Socket clientSocket = serverSocket.accept();
