@@ -5,19 +5,33 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox fx:id="box" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ReciveController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <Label fx:id="dataLabel" text="Server" />
+      <Label fx:id="dataLabel" alignment="CENTER" contentDisplay="CENTER" text="Server">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <ListView fx:id="filesRecived" prefHeight="200.0" prefWidth="200.0" />
       <Separator prefWidth="200.0" />
-      <Button mnemonicParsing="false" onAction="#onStartButtonClick" text="Start server" />
-      <Button mnemonicParsing="false" onAction="#onStopButtonClick" text="Stop server" />
-      <Button mnemonicParsing="false" onAction="#onBackButtonClick" text="BACK" />
-      <Label fx:id="infoLabel" />
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClick" text="Start server" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="28.0" visible="false" />
+            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStopButtonClick" text="Stop server" />
+         </items>
+      </ToolBar>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <Button mnemonicParsing="false" onAction="#onBackButtonClick" text="BACK" />
+            <Label fx:id="infoLabel" prefHeight="17.0" prefWidth="11.0" />
+         </items>
+      </ToolBar>
    </children>
 </VBox>

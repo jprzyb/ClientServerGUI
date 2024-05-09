@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -30,11 +31,17 @@ public class ReciveController {
     VBox box;
     @FXML
     Label infoLabel;
+    @FXML
+    Button startButton;
+    @FXML
+    Button stopButton;
 
     @FXML
     public void initialize() throws UnknownHostException{
         server = new Server();
         dataLabel.setText("SERVER\n"+ InetAddress.getLocalHost().getHostName() + ":" +PORT + "\nor\n" + InetAddress.getLocalHost().getHostAddress()+ ":" +PORT);
+        startButton.setDisable(false);
+        stopButton.setDisable(true);
     }
 
     @FXML
@@ -47,14 +54,18 @@ public class ReciveController {
     }
     @FXML
     void onStartButtonClick() {
-        box.setStyle("-fx-background-color: #c4b858");
+        startButton.setDisable(true);
+        stopButton.setDisable(false);
+//        box.setStyle("-fx-background-color: #c4b858");
         server.start();
         Logger.addLog("Serwer started.");
     }
 
     @FXML
     void onStopButtonClick() {
-        box.setStyle("-fx-background-color: #d44b42");
+        startButton.setDisable(false);
+        stopButton.setDisable(true);
+//        box.setStyle("-fx-background-color: #d44b42");
         server.stop();
         Logger.addLog("Serwer stopped.");
     }

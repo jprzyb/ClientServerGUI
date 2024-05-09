@@ -41,7 +41,11 @@ public class SendController {
     void fileChooser(){
         FileChooser fileChooser = new FileChooser();
         files = fileChooser.showOpenMultipleDialog(null);
-        fileList.getItems().setAll(files);
+        try {
+            fileList.getItems().setAll(files);
+        }catch (Exception e){
+            e.getMessage();
+        }
         Logger.addLog("Added files: " + files);
     }
 
