@@ -13,9 +13,13 @@ public class Server{
     Thread thread;
     List<Thread> clientsThreads;
     ServerSocket serverSocket;
+    String destination;
+    ReciveController controller;
 
-    public Server(){
+    public Server(ReciveController controller){
+        this.controller = controller;
         clientsThreads = new ArrayList<>();
+        destination = "recived_files/";
         thread = new Thread(()->{
             try {
                 serverSocket = new ServerSocket(PORT);
@@ -27,13 +31,14 @@ public class Server{
                 try {
                     Socket socket = serverSocket.accept();
                     Logger.addLog("Client connected: " + socket);
+                    controller.guiLogs.getItems().add("Client connected: " + socket);
                     Thread clientThread = new Thread(()->{
                         try{
                             Logger.addLog("Client started: " + socket);
                             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                             String fileName = dataInputStream.readUTF();
                             Logger.addLog("Recieved file name: " + fileName);
-                            fileName = "recived_files/" +fileName;
+                            fileName = destination +fileName;
                             Logger.addLog("File directory mapped: " + fileName);
                             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
                             byte[] buffer = new byte[4096];
@@ -43,10 +48,12 @@ public class Server{
                             }
                             fileOutputStream.close();
                             Logger.addLog("File recived: " + fileName);
+                            controller.guiLogs.getItems().add("File recived: " + fileName);
                         }catch (Exception e){
                             Logger.addLog("Something went wrong while recieving data!\n" + e.getMessage());
                         }
                         try {
+                            controller.guiLogs.getItems().add("Client disconnected: " + socket);
                             socket.close();
                         } catch (IOException e) {
                             Logger.addLog("Unable to close client connection!");
@@ -83,5 +90,9 @@ public class Server{
             a.interrupt();
         }
         thread.interrupt();
+    }
+    public void setDestination(String destination){
+        this.destination = destination;
+        Logger.addLog("Destination directory: " + this.destination);
     }
 }
