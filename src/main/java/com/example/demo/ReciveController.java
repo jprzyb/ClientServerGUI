@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -98,5 +99,10 @@ public class ReciveController {
         stopButton.setDisable(true);
         server.stop();
         Logger.addLog("Serwer stopped.");
+    }
+    void addElementToGuiLogs(String msg){
+        Platform.runLater(() -> {
+            guiLogs.getItems().addAll(msg);
+        });
     }
 }

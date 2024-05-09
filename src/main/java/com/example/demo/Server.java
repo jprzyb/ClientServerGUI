@@ -31,7 +31,7 @@ public class Server{
                 try {
                     Socket socket = serverSocket.accept();
                     Logger.addLog("Client connected: " + socket);
-                    controller.guiLogs.getItems().add("Client connected: " + socket);
+                    controller.addElementToGuiLogs("Client connected: " + socket);
                     Thread clientThread = new Thread(()->{
                         try{
                             Logger.addLog("Client started: " + socket);
@@ -48,12 +48,12 @@ public class Server{
                             }
                             fileOutputStream.close();
                             Logger.addLog("File recived: " + fileName);
-                            controller.guiLogs.getItems().add("File recived: " + fileName);
+                            controller.addElementToGuiLogs("File recived: " + fileName);
                         }catch (Exception e){
                             Logger.addLog("Something went wrong while recieving data!\n" + e.getMessage());
                         }
                         try {
-                            controller.guiLogs.getItems().add("Client disconnected: " + socket);
+                            controller.addElementToGuiLogs("Client disconnected: " + socket);
                             socket.close();
                         } catch (IOException e) {
                             Logger.addLog("Unable to close client connection!");
